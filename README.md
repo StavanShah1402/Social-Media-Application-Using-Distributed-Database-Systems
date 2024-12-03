@@ -23,6 +23,7 @@ This project sets up a sharded MongoDB cluster using Docker to handle a scalable
 
 
 **UI Setup**
+
 To have a look at your UI 
 1.	Connect to the MongoDB Cluster
 Use the following connection URL to connect to our single cluster MongoDB:
@@ -32,6 +33,7 @@ Use the following connection URL to connect to our single cluster MongoDB:
 
 
 **Database Replication Using Docker**
+
 Step 1: Config Server Replica Set
 1.	Create a custom Docker network for the MongoDB cluster:
          docker network create mongo_cluster_network
@@ -60,12 +62,14 @@ Step 1: Config Server Replica Set
 
 
 **Step 2: Router Setup**
+
 Set up a MongoDB Router (mongos) to manage requests and distribute them across shards.
           docker run -d --name mongos \net mongo_cluster_network \p 27017:27017 \mongo:6.0 mongos --configdb             
           rs0/mongo1:27018,mongo2:27019,mongo3:27020
 
 
 **Step 3: Shard Replica Sets**
+
 1.	Create multiple shard replica sets:
 For Shard 1:
     docker run -d --name shard1a --net mongo_cluster_network -p 27021:27021 \
@@ -91,6 +95,7 @@ Repeat similar commands for Shard 2 and Shard 3, using different ports and names
 
 
 **Step 4: Connect Shards to the Router**
+
 Connect all shards to the mongos router:
     sh.addShard("shard1ReplSet/shard1a:27021,shard1b:27022,shard1c:27023");
     sh.addShard("shard2ReplSet/shard2a:27031,shard2b:27032,shard2c:27033");
@@ -99,6 +104,7 @@ Connect all shards to the mongos router:
 
 
 **Sharding and Indexing**
+
 1.	Create indexes for shard keys:
    db.users.createIndex({ geographic_location: 1 });
 2.	Enable sharding for collections:
@@ -109,6 +115,7 @@ Connect all shards to the mongos router:
 
 
 **Connect and Explore**
+
 1.	Use the mongos router to interact with your sharded MongoDB cluster. Example connection string for mongo shell:
     mongo --host localhost --port 27017
 
