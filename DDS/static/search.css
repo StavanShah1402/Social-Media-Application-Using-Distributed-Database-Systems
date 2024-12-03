@@ -1,0 +1,153 @@
+/* General Body Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Hamburger Menu Styles */
+.hamburger-menu {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 100;
+}
+
+.menu-icon {
+    display: block;
+    font-size: 30px;
+    cursor: pointer;
+    color: #007bff;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+.menu {
+    position: fixed;
+    top: 0;
+    left: -220px; /* Hidden initially */
+    background-color: #444;
+    color: white;
+    height: 100%;
+    width: 200px;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: left 0.3s ease-in-out;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 15px 20px;
+    transition: background 0.3s;
+}
+
+.menu a:hover {
+    background: #007bff;
+    color: white;
+}
+
+.menu-close {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-align: right;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.menu-close:hover {
+    color: #ff0000;
+}
+
+#menu-toggle:checked + .menu-icon + .menu {
+    left: 0; /* Slide into view when toggled */
+}
+
+/* Main Content */
+main {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Search Header */
+main h1 {
+    font-size: 24px;
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Search Form */
+.search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.search-form input {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.search-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.search-form button:hover {
+    background-color: #0056b3;
+}
+
+/* User List */
+.user-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-list li {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.user-list li a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 18px;
+}
+
+.user-list li a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.user-list li:last-child {
+    margin-bottom: 0;
+}

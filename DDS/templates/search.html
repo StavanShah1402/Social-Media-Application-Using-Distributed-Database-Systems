@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Search Users</title>
+    <link rel="stylesheet" href="/static/search.css">
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <!-- Hamburger Menu -->
+<div class="hamburger-menu">
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">
+        ☰
+    </label>
+    <nav class="menu">
+        <label for="menu-toggle" class="menu-close">✕</label>
+        <a href="/feed">Home</a>
+        <a href="/search">Search</a>
+        {% if current_user_id %}
+        <a href="/profile/{{ current_user_id }}">Profile</a>
+        <a href="/logout">Logout</a>
+        {% else %}
+        <a href="/login">Login</a>
+        {% endif %}
+    </nav>       
+</div>
+
+
+    <!-- Main Content -->
+    <main>
+        <h1>Search Users</h1>
+        <form action="/search" method="get" class="search-form">
+            <input type="text" name="q" placeholder="Search for users" value="{{ query }}" required>
+            <button type="submit">Search</button>
+        </form>
+        <ul class="user-list">
+            {% for user in users %}
+            <li>
+                <a href="/profile/{{ user['user_id'] }}">{{ user['username'] }}</a>
+            </li>
+            {% else %}
+            <li>No users found.</li>
+            {% endfor %}
+        </ul>
+        <div class="top-liked">
+            <h2>Top Liked Posts</h2>
+            {% for post in top_posts %}
+            <div class="post">
+                <p>{{ post['content'] }}</p>
+                <p>Likes: {{ post['likes'] | length }}</p>
+                <a href="/post/{{ post['_id'] }}">View Post</a>
+            </div>
+            {% endfor %}
+        </div>
+        
+    </main>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="/static/profile.css">
+</head>
+
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu">
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">☰</label>
+        <nav class="menu">
+            <label for="menu-toggle" class="menu-close">✕</label>
+            <a href="/feed">Home</a>
+            <a href="/search">Search</a>
+            {% if current_user_id %}
+            <a href="/profile/{{ current_user_id }}">Profile</a>
+            <a href="/logout">Logout</a>
+            {% else %}
+            <a href="/login">Login</a>
+            {% endif %}
+        </nav>
+    </div>
+
+    <!-- Profile Header -->
+    <header class="profile-header">
+        <div class="profile-banner"></div>
+        <div class="profile-info">
+            <div class="profile-photo">
+                <img src="{{ user['profile_picture'] }}" alt="Profile Picture">
+                <h1>{{ user['username'] }}</h1>
+            </div>
+            <div class="profile-stats">
+                <div><span>{{ followers_count }}</span> Followers</div>
+                <div><span>{{ following_count }}</span> Following</div>
+                {% if user['user_id'] != current_user_id %}
+                <form method="POST"
+                    action="{% if is_following %}/unfollow/{{ user['user_id'] }}{% else %}/follow/{{ user['user_id'] }}{% endif %}">
+                    <button type="submit">
+                        {% if is_following %}Unfollow{% else %}Follow{% endif %}
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Create Post Section -->
+    {% if user['user_id'] == current_user_id %}
+    <section class="create-post">
+        <h2>Create a New Post</h2>
+        <form action="/create_post" method="POST" enctype="multipart/form-data">
+            <input type="text" name="heading" placeholder="Enter a heading for your post" required>
+            <textarea name="content" placeholder="Write something about this post..." required></textarea>
+            <input type="file" name="media">
+            <button type="submit">Create Post</button>
+        </form>
+    </section>
+    {% endif %}
+
+    <!-- Posts Section -->
+    <section class="posts">
+        <h2>Posts</h2>
+        {% for post in posts %}
+        <div class="post">
+            <div class="post-description">
+                <h3>{{ post['heading'] }}</h3>
+                <p>{{ post['content'] }}</p>
+                <p class="timestamp">Posted on: {{ post['timestamp'] }}</p>
+                <a href="/post/{{ post['_id'] }}" class="view-post-button">View Post</a>
+            </div>
+            {% if post['media'] %}
+            <div class="post-image">
+                <img src="{{ post['media'] }}" alt="Post Image">
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <p>No posts available.</p>
+        {% endfor %}
+    </section>
+</body>
+
+</html>

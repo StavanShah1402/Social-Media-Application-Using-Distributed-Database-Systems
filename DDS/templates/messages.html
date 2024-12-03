@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Messages</title>
+    <link rel="stylesheet" href="/static/messages.css">
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu">
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">☰</label>
+        <nav class="menu">
+            <label for="menu-toggle" class="menu-close">✕</label>
+            <a href="/feed">Home</a>
+            <a href="/search">Search</a>
+            {% if current_user_id %}
+            <a href="/profile/{{ current_user_id }}">Profile</a>
+            <a href="/logout">Logout</a>
+            {% else %}
+            <a href="/login">Login</a>
+            {% endif %}
+        </nav>
+    </div>
+
+    <main>
+        <header class="messages-header">Messages</header>
+        <div class="messages-container">
+            <!-- Left: List of conversations -->
+            <div class="conversations-list">
+                <h2>Conversations</h2>
+                <ul>
+                    {% for convo in conversations %}
+                    <li>
+                        <a href="/messages?conversation_id={{ convo.conversation_id }}" 
+                           class="{% if selected_conversation_id == convo.conversation_id %}active{% endif %}">
+                            <strong>{{ convo.participant }}</strong>
+                            <p class="last-message">{{ convo.last_message }}</p>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Right: Messages in the selected conversation -->
+            <!-- Right: Messages in the selected conversation -->
+<div class="conversation-messages">
+    {% if messages %}
+        <h2>Conversation</h2>
+        <div class="messages">
+            {% for message in messages %}
+            <p><strong>{{ message.sender_id }}</strong>: {{ message.message }}</p>
+            <p class="timestamp">{{ message.timestamp }}</p>
+            {% endfor %}
+        </div>
+        <form action="/send_message/{{ selected_conversation_id }}" method="POST">
+            <!-- Hidden input to pass receiver_id -->
+            <input type="hidden" name="receiver_id" value="{{ messages[0].receiver_id if messages else '' }}">
+            <textarea name="message" placeholder="Type your message..." required></textarea>
+            <button type="submit">Send</button>
+        </form>
+    {% else %}
+        <p>Select a conversation to view messages.</p>
+    {% endif %}
+</div>
+
+        </div>
+    </main>
+</body>
+</html>

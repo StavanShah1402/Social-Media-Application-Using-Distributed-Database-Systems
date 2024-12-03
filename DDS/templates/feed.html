@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Feed</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/feed.css">
+</head>
+
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu">
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">☰</label>
+        <nav class="menu">
+            <label for="menu-toggle" class="menu-close">✕</label>
+            <a href="/feed">Home</a>
+            <a href="/search">Search</a>
+            {% if current_user_id %}
+            <a href="/profile/{{ current_user_id }}">Profile</a>
+            <a href="/logout">Logout</a>
+            {% else %}
+            <a href="/login">Login</a>
+            {% endif %}
+        </nav>
+    </div>
+
+    <!-- Feed Content -->
+    <main>
+        <header class="feed-header">
+            <h1>Your Feed</h1>
+            <a href="/messages" class="messages-button">Messages</a>
+        </header>
+
+        <section class="posts">
+            {% if posts %}
+            {% for post in posts %}
+            <article class="post">
+                <div class="post-description">
+                    <h3>{{ post['heading'] }}</h3>
+                    <p>{{ post['content'] }}</p>
+                    <p>Posted by: {{ post['user_id'] }}</p>
+                    <p class="timestamp">Posted on: {{ post['timestamp'] }}</p>
+                    <a href="/post/{{ post['_id'] }}" class="view-post-button">View Post</a>
+                </div>
+                {% if post['media'] %}
+                <div class="post-image">
+                    <img src="{{ post['media'] }}" alt="Post Image">
+                </div>
+                {% endif %}
+            </article>
+            {% endfor %}
+            {% else %}
+            <p>No posts to display.</p>
+            {% endif %}
+        </section>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            {% if page > 1 %}
+            <a href="/feed?page={{ page - 1 }}" class="pagination-button">Previous</a>
+            {% endif %}
+            <a href="/feed?page={{ page + 1 }}" class="pagination-button">Next</a>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Post Details</title>
+    <link rel="stylesheet" href="/static/post_detail.css">
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu">
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">☰</label>
+        <nav class="menu">
+            <label for="menu-toggle" class="menu-close">✕</label>
+            <a href="/feed">Home</a>
+            <a href="/search">Search</a>
+            {% if current_user_id %}
+            <a href="/profile/{{ current_user_id }}">Profile</a>
+            <a href="/logout">Logout</a>
+            {% else %}
+            <a href="/login">Login</a>
+            {% endif %}
+        </nav>       
+    </div>
+
+    <!-- Post Details -->
+    <main>
+        <div class="post-container">
+            <!-- Post Header -->
+            <div class="post-header">
+                <h1 class="post-title">{{ post['heading'] }}</h1>
+                <p class="post-author">Posted by: <strong>{{ post['user_id'] }}</strong></p>
+                <p class="post-timestamp">Posted on: {{ post['timestamp'] }}</p>
+            </div>
+            
+            <!-- Post Content -->
+            <div class="post-content">
+                <p>{{ post['content'] }}</p>
+            </div>
+            
+            <!-- Post Image -->
+            {% if post['media'] %}
+            <div class="post-image">
+                <img src="{{ post['media'] }}" alt="Post Image">
+            </div>
+            {% endif %}
+
+            <!-- Post Actions -->
+            <div class="post-actions">
+                <form method="POST" action="/post/{{ post['_id'] }}/like">
+                    {% if is_liked %}
+                    <button type="submit" name="action" value="unlike" class="like-button unlike">Unlike</button>
+                    {% else %}
+                    <button type="submit" name="action" value="like" class="like-button">Like</button>
+                    {% endif %}
+                </form>
+                <p>{{ likes_count }} Likes</p>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <h2>Comments</h2>
+                <ul class="comments-list">
+                    {% for comment in comments %}
+                    <li>
+                        <p class="comment-text"><strong>{{ comment['user_id'] }}:</strong> {{ comment['text'] }}</p>
+                        {% if comment['user_id'] == session['user_id'] %}
+                        <form action="/post/{{ post['_id'] }}/comment/{{ comment['_id'] }}/delete" method="POST" class="delete-comment-form">
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                <form action="/post/{{ post['_id'] }}/comment" method="POST" class="comment-form">
+                    <textarea name="comment_text" placeholder="Add a comment..." required></textarea>
+                    <button type="submit" class="comment-button">Comment</button>
+                </form>                
+            </div>
+        </div>
+    </main>
+</body>
+</html>
