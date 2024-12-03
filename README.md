@@ -24,7 +24,7 @@ This project sets up a sharded MongoDB cluster using Docker to handle a scalable
 
 **UI Setup**
 
-To have a look at your UI 
+To have a look at our UI 
 1.	Connect to the MongoDB Cluster
 Use the following connection URL to connect to our single cluster MongoDB:
     mongodb+srv://test1234:test1234@cluster0.wsbge.mongodb.net/
@@ -116,8 +116,8 @@ Connect all shards to the mongos router:
 
 **Connect and Explore**
 
-1.	Use the mongos router to interact with your sharded MongoDB cluster. Example connection string for mongo shell:
+1.	Use the mongos router to interact with the sharded MongoDB cluster. Example connection string for mongo shell:
     mongo --host localhost --port 27017
 
-2.	Run your application and explore the database functionality.
+2.	Run the application and explore the database functionality.
 
